@@ -5,8 +5,8 @@ import hashlib, binascii
 import random
 
 password = b'letmein'
-random_num_min= 1000
-random_num_max= 1005
+random_num_min= 0
+random_num_max= 1000
 
 def generate_random_key():
     salt = bytes(random.randint(random_num_min,random_num_max))
@@ -14,17 +14,14 @@ def generate_random_key():
     return dk
 
 def generate_key(salt):
-    
-    key = hashlib.pbkdf2_hmac('sha256',password,salt, 100000)
-    return key.decode('utf-8')
-    
+    key = hashlib.pbkdf2_hmac('sha256',password,salt, 1000)
+    return key.hex()
+
 def validate_key(key):
     isValid = False
     for i in range(random_num_min,random_num_max):
         salt = bytes(i)
         dk = generate_key(salt)
-        print("key: " + key)
-        print("dk: " + dk)
         if dk == key:
             isValid = True
             break
